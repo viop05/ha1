@@ -89,6 +89,22 @@ class CalculatorTest {
     }
 
     @Test
+    @DisplayName("should display result after multiplying two positive numbers")
+    void testPositiveMultiplication() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(7);
+        calc.pressBinaryOperationKey("x");
+        calc.pressDigitKey(7);
+        calc.pressEqualsKey();
+
+        String expected = "49";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
     @DisplayName("should repeat last operation when pressing equals multiple times")
     void testRepeatEqualsOperation() {
         Calculator calc = new Calculator();
