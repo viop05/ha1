@@ -88,7 +88,48 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @DisplayName("should repeat last operation when pressing equals multiple times")
+    void testRepeatEqualsOperation() {
+        Calculator calc = new Calculator();
 
-    //TODO hier weitere Tests erstellen
+        calc.pressDigitKey(5);
+        calc.pressBinaryOperationKey("3");
+        calc.pressDigitKey(3);
+        calc.pressEqualsKey();
+        calc.pressEqualsKey();
+
+        String expected = "11";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+    //Gibt 13, anstatt 11 wieder
+    // Im Code Calculator Zeile 122 steht: case "+" -> latestValue + Double.parseDouble(screen); und das bedeutet, dass der aktuelle wert auf dem Schirm immer mit der Zahl vor dem Operator rechnet, was falsch ist.
+    // 5 + 3 = 8; wenn man wieder auf = drückt, wird NICHT 8 + 3 = 11 gerechnet, sondern 8 + 5 = 13
+
+    @Test
+    @DisplayName("should repeat last operation when pressing equals multiple times")
+    void testPercentAfterOperation() {
+        Calculator calc = new Calculator();
+
+        calc.pressDigitKey(2);
+        calc.pressDigitKey(0);
+        calc.pressDigitKey(0);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(1);
+        calc.pressDigitKey(0);
+        calc.pressUnaryOperationKey("%");
+        calc.pressEqualsKey();
+
+        String expected = "220";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+    //Der Test macht 200.1 anstatt 220 (200 + 10%) daraus
+    //Der Fehler liegt im Code Calculator Zeile 79: case "%" -> Double.parseDouble(screen) / 100; das macht jedoch die aktuelle Zahl/100
+    // 10% = 0.1; 200 + 0.1= 200.1
+
 }
 
